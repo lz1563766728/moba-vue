@@ -2,8 +2,8 @@ const AdminUser = require('../../models/AdminUser');
 
 module.exports = app =>{
     const express = require('express');
-    const jwt = require('jsonwebtoken');
-    const AdminUser = require('../../models/AdminUser')
+    const assert = require('http-assert')
+    const jwt = require('jsonwebtoken')
     var router = express.Router({
         mergeParams:true
     });
@@ -26,14 +26,7 @@ module.exports = app =>{
         res.send(model)
     })
     //分类列表
-    router.get('/',async(req,res,next)=>{
-        const token = String(req.headers.authorization || '').split(' ').pop()
-        const{ id } = jwt.verify(token,app.get('secret'))
-        req.user = await AdminUser.findById(id)
-        console.log(req.user)
-        await next()
-    },
-    async(req,res)=>{
+    router.get('/', async(req,res)=>{
         let queryOptions = {}
         if(req.Model.modelName === 'Category'){
             queryOptions.populate = 'parent'
@@ -46,17 +39,17 @@ module.exports = app =>{
         const model =  await req.Model.findById(req.params.id)
         res.send(model)
     })
+    //登录校验中间件
+    const authMiddleware = require('../../middleware/auth')
+    //自动寻找上传路径中间件
+    const resourceMiddleware = require('../../middleware/resource')
 
-    app.use('/admin/api/rest/:resource',async(req,res,next)=>{
-        const modelName = require('inflection').classify(req.params.resource)
-        req.Model = require(`../../models/${modelName}`)
-       next() 
-    },router)
+    app.use('/admin/api/rest/:resource',authMiddleware(),resourceMiddleware(),router)
 
     //上传
     const multer = require('multer')
     const upload = multer({dest:__dirname+'/../../uploads'})
-    app.post('/admin/api/upload',upload.single('file'),async(req,res)=>{
+    app.post('/admin/api/upload',authMiddleware(),upload.single('file'),async(req,res)=>{
         const file = req.file
         file.url = `http://localhost:3000/uploads/${file.filename}`
         res.send(file)
