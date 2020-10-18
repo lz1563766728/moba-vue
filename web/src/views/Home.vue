@@ -27,7 +27,50 @@
       </div>
     </div>
     <!-- end of icn -->
-    
+    <m-card icon="Menu" title="新闻资讯">
+
+    </m-card>
+
+    <div class="card bg-white p-3 mt-3">
+      <div class="card-header d-flex ai-center">
+         <i class="iconfont" :class="`icon-${icon}`"></i>
+         <div class="fs-xl px-2 flex-1">新闻资讯</div>
+         <i class="iconfont icon-menu">{{title}}</i>
+
+      </div>
+      
+      <div class="card-body pt-3">
+        <div class="nav jc-between">
+          <div class="nav-item active">
+            <div class="nav-linlk">热门</div>
+          </div>
+          <div class="nav-item">
+            <div class="nav-linlk">新闻</div>
+          </div>
+          <div class="nav-item">
+            <div class="nav-linlk">公告</div>
+          </div>
+          <div class="nav-item">
+            <div class="nav-linlk">活动</div>
+          </div>
+          <div class="nav-item">
+            <div class="nav-linlk">赛事</div>
+          </div>
+        </div>
+        <div class="py-3">         
+          <swiper>
+            <swiper-slide v-for="n in 5" :key="n">
+              <div class="py-2" v-for="m in 5" :key="m">
+                <span>[新闻]</span>
+                <span>|</span>
+                <span>王者风物志 | 投稿盘点，绝美插画、创意周边一次看够！</span>
+                <span>10/05</span>
+              </div>
+            </swiper-slide>
+          </swiper>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

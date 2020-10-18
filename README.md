@@ -1,4 +1,4 @@
-分别进入admin文件夹和moba-server文件夹，使用npm run serve即可运行
+分别进入三个文件夹，使用npm run serve即可运行，目前尝试新的代码风格！
 
 后台管理
 一、基于element-ui的后台管理基础界面搭建
